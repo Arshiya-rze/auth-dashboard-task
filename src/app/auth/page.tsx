@@ -6,8 +6,6 @@ import { loginSchema } from '@/lib/validation';
 import { z } from 'zod';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
-import Input from '@/components/ui/Input/Input';
-import Button from '@/components/ui/Button/Button';
 import styles from './AuthPage.module.scss';
 
 type LoginForm = z.infer<typeof loginSchema>;
@@ -42,16 +40,35 @@ export default function AuthPage() {
     };
 
     return (
-        <div className={styles.authPage}>
-            <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
-                <h2>Login to Your Account</h2>
-                <Input
-                    label="Phone Number"
-                    placeholder="مثلاً 09123456789"
-                    {...register('phone')}
-                    error={errors.phone?.message}
-                />
-                <Button type="submit">Login</Button>
+        <div className={styles.container}>
+            <form onSubmit={handleSubmit(onSubmit)} className={styles.subscribe}>
+                <p>Login To Your Account</p>
+                <div className={styles.inputContainer}>
+                    <input
+                        required
+                        type="text"
+                        inputMode="numeric"
+                        maxLength={11}
+                        className={styles.input}
+                        {...register('phone')}
+                        onKeyDown={(e) => {
+                            const allowedKeys = ['Backspace', 'ArrowLeft', 'ArrowRight', 'Tab', 'Delete'];
+                            if (
+                                !/[0-9]/.test(e.key) &&
+                                !allowedKeys.includes(e.key)
+                            ) {
+                                e.preventDefault();
+                            }
+                        }}
+                    />
+
+                    <label className={styles.label}>Phone Number (e.g. 09123456789)</label>
+                    {errors.phone && <span className={styles.error}>{errors.phone.message}</span>}
+                </div>
+
+                <button type="submit" className={styles.submitBtn}>
+                    LOGIN
+                </button>
             </form>
         </div>
     );
