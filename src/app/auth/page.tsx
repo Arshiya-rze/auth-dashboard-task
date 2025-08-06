@@ -8,6 +8,7 @@ import { useRouter } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
 import Input from '@/components/ui/Input/Input';
 import Button from '@/components/ui/Button/Button';
+import styles from './AuthPage.module.scss';
 
 type LoginForm = z.infer<typeof loginSchema>;
 
@@ -23,8 +24,8 @@ export default function AuthPage() {
     const onSubmit = async () => {
         const res = await fetch('https://randomuser.me/api/?results=1&nat=us');
         const data = await res.json();
-        const result = data.results[0];
 
+        const result = data.results[0];
         const user = {
             name: `${result.name.first} ${result.name.last}`,
             email: result.email,
@@ -32,17 +33,26 @@ export default function AuthPage() {
             location: `${result.location.city}, ${result.location.state}, ${result.location.country}`,
             age: result.dob.age,
             phone: result.cell,
-            username: result.login.username
+            username: result.login.username,
         };
+
         localStorage.setItem('user', JSON.stringify(user));
         setUser(user);
         router.push('/dashboard');
     };
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)}>
-            <Input label="Phone Number" {...register('phone')} error={errors.phone?.message} />
-            <Button type="submit">Login</Button>
-        </form>
+        <div className={styles.authPage}>
+            <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
+                <h2>Login to Your Account</h2>
+                <Input
+                    label="Phone Number"
+                    placeholder="مثلاً 09123456789"
+                    {...register('phone')}
+                    error={errors.phone?.message}
+                />
+                <Button type="submit">Login</Button>
+            </form>
+        </div>
     );
 }
