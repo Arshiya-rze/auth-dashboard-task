@@ -45,18 +45,14 @@ export default function AuthPage() {
                 <p>Login To Your Account</p>
                 <div className={styles.inputContainer}>
                     <input
-                        required
                         type="text"
                         inputMode="numeric"
-                        maxLength={11}
                         className={styles.input}
+                        maxLength={11}
                         {...register('phone')}
                         onKeyDown={(e) => {
                             const allowedKeys = ['Backspace', 'ArrowLeft', 'ArrowRight', 'Tab', 'Delete'];
-                            if (
-                                !/[0-9]/.test(e.key) &&
-                                !allowedKeys.includes(e.key)
-                            ) {
+                            if (!/[0-9]/.test(e.key) && !allowedKeys.includes(e.key)) {
                                 e.preventDefault();
                             }
                         }}
