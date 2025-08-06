@@ -23,10 +23,16 @@ export default function AuthPage() {
     const onSubmit = async () => {
         const res = await fetch('https://randomuser.me/api/?results=1&nat=us');
         const data = await res.json();
-        console.log(data);
+        const result = data.results[0];
+
         const user = {
-            name: data.results[0].name.first,
-            email: data.results[0].email,
+            name: `${result.name.first} ${result.name.last}`,
+            email: result.email,
+            picture: result.picture.large,
+            location: `${result.location.city}, ${result.location.state}, ${result.location.country}`,
+            age: result.dob.age,
+            phone: result.cell,
+            username: result.login.username
         };
         localStorage.setItem('user', JSON.stringify(user));
         setUser(user);

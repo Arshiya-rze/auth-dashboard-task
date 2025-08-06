@@ -5,6 +5,11 @@ import { createContext, useContext, useEffect, useState } from 'react';
 export interface User {
     name: string;
     email: string;
+    picture: string;
+    location: string;
+    age: number;
+    phone: string;
+    username: string;
 }
 
 const AuthContext = createContext<{
